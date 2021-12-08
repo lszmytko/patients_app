@@ -32,11 +32,23 @@ export default {
   name: "App",
   components: { Card },
   setup() {
+
+    // Refs
     let patients = ref(null);
     let patientsAbove30 = ref(null);
     let patientsBelow63withMedicineStrength = ref(null);
     let filterAgeActive = ref(false);
     let filterAgeAndMedicineActive = ref(false);
+
+    // Constants
+
+    const ageCriteria = 30;
+    const ageAndMedicineCriteria = {
+      age: 63,
+      medicineStrength: 8
+    }
+
+    // Handling filter criteria
 
     function handleFilterAgeActive() {
       this.filterAgeActive = !this.filterAgeActive;
@@ -75,27 +87,35 @@ export default {
       )
       .catch((e) => console.log(e));
 
+    // Patients watcher
+
     watch(patients, () => {
+
+      // Generate above30 array
       patientsAbove30.value = patients.value.filter((patient) => {
-        return patient.age > 30;
+        return patient.age > ageCriteria;
       });
 
+      // turning array of proxies into normal array
       const tempArray = [...patients.value].map((item) => {
         return JSON.parse(JSON.stringify(item));
       });
 
+      // Generate array of below 63 and 
+
       patientsBelow63withMedicineStrength.value = tempArray
         .map((patientTemp) => {
           patientTemp.medicines = patientTemp.medicines.filter((medicine) => {
-            return medicine.strength > 8;
+            return medicine.strength > ageAndMedicineCriteria.medicineStrength;
           });
           return patientTemp;
         })
         .filter((patientTemp) => {
-          return patientTemp.age < 63;
+          return patientTemp.age < ageAndMedicineCriteria.age;
         });
     });
 
+  // Generate final array to show
    const patientsToShow = computed(function(){
      if(filterAgeActive.value === true){
        return patientsAbove30.value;
