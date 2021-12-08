@@ -1,5 +1,6 @@
 
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
 
 *,
 ::after,
@@ -8,6 +9,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+html, body{
+  height: 100%;
+  background: #fbffe2;
+  margin:0;
+  padding:0;
+  height:100%;
+ }
 
 
 @media screen and (min-width: 768px) {
